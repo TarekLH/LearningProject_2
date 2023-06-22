@@ -1,22 +1,18 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext, useState } from 'react';
 
 export const AuthContext= createContext();
 
-class AuthContextPovider extends Component {
-  state = {
+export default function AuthContextProvider({children}) {
+  const [authState, setAuthState] = useState({
     isAuthenticated: false
-  };
-  toggleAuth = () => {
-    this.setState({ isAuthenticated: !this.state.isAuthenticated});
+  });
+  const toggleAuth = () => {
+    setAuthState({ isAuthenticated: !authState.isAuthenticated})
   };
 
-  render() {
-    return (
-      <AuthContext.Provider value={{...this.state, toggleAuth: this.toggleAuth}}>
-        {this.props.children}
-      </AuthContext.Provider>
-    );
-  }
+  return (
+    <AuthContext.Provider value={{...authState, toggleAuth}}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
-
-export default AuthContextPovider;
